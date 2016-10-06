@@ -79,4 +79,23 @@
     FBSnapshotVerifyView(greenView, nil);
 }
 
+/**
+ * Verify that an image using UIImageRenderingModeAlwaysTemplate produces equivalent
+ * snapshots across devices - iPhone 6s and 7.  Oddly, the color value seems to make
+ * a difference - see comments below.
+ */
+- (void)testViewSnapshotWithImage
+{
+  UIImage *chevronImage = [UIImage imageNamed:@"icon_seeall_chevron" inBundle:[NSBundle bundleForClass:[self class]] compatibleWithTraitCollection:nil];
+  chevronImage = [chevronImage imageWithRenderingMode:UIImageRenderingModeAlwaysTemplate];
+  UIImageView *imageView = [[UIImageView alloc] initWithImage:chevronImage];
+  
+  // Oddly, if I use [UIColor redColor] then iPhone 6s and 7 report the same snapshot
+  imageView.tintColor = [UIColor colorWithRed:.2 green:.2 blue:.2 alpha:1.0];
+  
+  [imageView sizeToFit];
+  
+  FBSnapshotVerifyView(imageView, nil);
+}
+
 @end
